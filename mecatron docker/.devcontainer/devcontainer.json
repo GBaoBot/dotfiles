@@ -1,0 +1,53 @@
+{
+    "name": "Mecatron - ROS2 Humble",
+    "build": { "dockerfile": "Dockerfile" },
+    "remoteUser": "ubuntu",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/workspace,type=bind",
+    "workspaceFolder": "/home/ubuntu/workspace",
+    "runArgs": [
+        "--network=host",
+        "--privileged",
+        "--gpus", "all"
+    ],
+    "containerEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}",
+        "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}"
+    },
+    "mounts": [
+        { 
+            "source": "/tmp/.X11-unix", 
+            "target": "/tmp/.X11-unix", 
+            "type": "bind" 
+        },
+        { 
+            "source": "${localEnv:HOME}/.zsh_history", 
+            "target": "/home/ubuntu/.zsh_history", 
+            "type": "bind"
+        },
+        { 
+            "source": "${localEnv:HOME}/.oh-my-zsh", 
+            "target": "/home/ubuntu/.oh-my-zsh", 
+            "type": "bind"
+        },
+        { 
+            "source": "${localEnv:HOME}/.config/starship.toml", 
+            "target": "/home/ubuntu/.config/starship.toml", 
+            "type": "bind"
+        }
+    ],
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/usr/bin/zsh"
+            },
+            "extensions": [
+                "ms-iot.vscode-ros",
+                "ms-python.python",
+                "ms-vscode.cpptools",
+                "eamodio.gitlens"
+            ]
+        }
+    },
+    "postCreateCommand": "rosdep update",
+    "initializeCommand": "xhost +local:"
+}
